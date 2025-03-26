@@ -680,7 +680,6 @@ static void server_new_xdg_toplevel(struct wl_listener *listener, void *data);
 void layout_dwindle(struct hellwm_workspace *workspace);
 void calculate_layout(struct hellwm_node *node, struct wlr_box *area, int inner_gap, int outer_gap, int border_width);
 
-/* Global Variables */
 struct hellwm_server *GLOBAL_SERVER = NULL;
 
 struct hellwm_node *find_node_by_toplevel(struct hellwm_node *node, struct hellwm_toplevel *toplevel)
@@ -3439,7 +3438,10 @@ void hellwm_config_manager_reload(struct hellwm_server *server)
     server->config_manager = hellwm_config_manager_create();
 
     /* here if successfull it replaces config_manager with dummy */
-    hellwm_config_manager_load_from_file("./config.lua");
+    char *home = getenv("HOME");
+    char config_file[1024];
+    snprintf(config_file, sizeof(config_file), "%s/.config/hellwm/config.lua", home);
+    hellwm_config_manager_load_from_file(config_file);
 
     //TODO: uncomment, for some reason it leads to crash sometimes
     //hellwm_config_manager_monitor_reload(server);
@@ -4739,7 +4741,10 @@ int main(int argc, char *argv[])
 
     /* config */
     server->config_manager = hellwm_config_manager_create();
-    hellwm_config_manager_load_from_file("./config.lua");
+    char *home = getenv("HOME");
+    char config_file[1024];
+    snprintf(config_file, sizeof(config_file), "%s/.config/hellwm/config.lua", home);
+    hellwm_config_manager_load_from_file(config_file);
 
     /* display */
     server->wl_display = wl_display_create();
