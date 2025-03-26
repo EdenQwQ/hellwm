@@ -940,6 +940,9 @@ void LOG(const char *format, ...)
 /* a lot of switch statements for now */
 void ipc_handle(const char *cmd, char *response)
 {
+    char message[1024];
+    snprintf(message, 1024, "notify-send 'Received command: %s'", cmd);
+    RUN_EXEC(message);
     if (strncmp(cmd, "get ", 4) == 0)
     {
         if (strcmp(cmd+4, "active_workspace") == 0)
